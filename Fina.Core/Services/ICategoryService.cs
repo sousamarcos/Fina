@@ -4,7 +4,7 @@ using Fina.Core.Responses;
 
 namespace Fina.Core.Services
 {
-    internal interface ICategoryService
+    public interface ICategoryService
     {
         Task<Response<Category?>> CreateAsync(CreateCategoryRequest request);
         Task<Response<Category?>> UpdateAsync(UpdateCategoryRequest request);

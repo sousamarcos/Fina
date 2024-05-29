@@ -1,6 +1,6 @@
 ﻿using Fina.Core.Requests.Transactions;
 using Fina.Core.Responses;
-using System.Transactions;
+using Fina.Core.Models;
 
 namespace Fina.Core.Services
 {

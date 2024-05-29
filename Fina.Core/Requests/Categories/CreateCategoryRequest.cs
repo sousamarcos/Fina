@@ -9,6 +9,6 @@ namespace Fina.Core.Requests.Categories
         public string Title { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Descrição inválida")]
-        public string Descricao { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }
