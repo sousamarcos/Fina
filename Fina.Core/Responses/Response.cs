@@ -16,7 +16,7 @@ namespace Fina.Core.Responses
         private int _code = Configuration.DefaultStatusCodeResponse;
 
         [JsonIgnore]
-        public bool IsSucess => _code is >= 200 and <= 299;
+        public bool IsSuccess => _code is >= 200 and <= 299;
 
         public string? Message { get; set; }
         public TData? Data { get; set; }

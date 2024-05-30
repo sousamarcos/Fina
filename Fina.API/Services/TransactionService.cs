@@ -1,4 +1,5 @@
 ﻿using Fina.API.Data;
+using Fina.Core.Ferramentas;
 using Fina.Core.Models;
 using Fina.Core.Requests.Transactions;
 using Fina.Core.Responses;
@@ -68,7 +69,7 @@ namespace Fina.API.Services
         {
             try
             {
-                var transaction = await context.Transactions.FirstOrDefaultAsync(c => c.UserId == request.UserId && c.Id == request.Id);
+                var transaction = await context.Transactions.AsNoTracking().FirstOrDefaultAsync(c => c.UserId == request.UserId && c.Id == request.Id);
                 if (transaction == null)
                     return new Response<Transaction?>(null, 404, "Transação não encontrada");
 
@@ -82,7 +83,27 @@ namespace Fina.API.Services
 
         public async Task<PagedResponse<List<Transaction>?>> GetByPeriodAsync(GetTransactionsByPeriodRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                request.StartDate ??= DateTime.Now.GetPrimeiroDia();
+                request.EndDate ??= DateTime.Now.GetUltimoDia();
+
+
+                var query = context.Transactions
+                    .AsNoTracking()
+                    .Where(c => c.UserId == request.UserId && c.PaidOrReceivedAt >= request.StartDate && c.PaidOrReceivedAt <= request.EndDate)
+                    .OrderBy(c => c.PaidOrReceivedAt);
+
+                var transactions = await query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+
+                var count = await query.CountAsync();
+
+                return new PagedResponse<List<Transaction>?>(transactions, count, request.PageNumber, request.PageSize);
+            }
+            catch
+            {
+                return new PagedResponse<List<Transaction>?>(null, 404, "Não foi possível recurar a lista de transações");
+            }
         }
 
         public async Task<Response<Transaction?>> UpdateAsync(UpdateTransactionRequest request)

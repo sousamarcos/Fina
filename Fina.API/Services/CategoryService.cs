@@ -67,7 +67,7 @@ namespace Fina.API.Services
             }
             catch
             {
-                return new PagedResponse<List<Category>?>(null, 404, "Não foi possível recurar a lista de categorias")
+                return new PagedResponse<List<Category>?>(null, 404, "Não foi possível recurar a lista de categorias");
             }
         }
 

@@ -1,20 +1,25 @@
-using Fina.API.Data;
-using Fina.API.Services;
-using Fina.Core.Services;
-using Microsoft.EntityFrameworkCore;
+using Fina.API;
+using Fina.API.Common.API;
+using Fina.API.EndPoints;
+using Microsoft.Extensions.Configuration;
+
 
 var builder = WebApplication.CreateBuilder(args);
-
-const string conectionstring = "Server=NTB-ASUS\\SQLEXPRESS;Database=Fina;Password=qazwsx3s;User ID=sa;Trusted_Connection=False;TrustServerCertificate=True;";
-
-builder.Services.AddDbContext<AppDbContext>(
-    x=> x.UseSqlServer(conectionstring));
-
-builder.Services.AddTransient<ICategoryService, CategoryService>();
-builder.Services.AddTransient<ITransactionService, TransactionService>();
+builder.AddConfiguration();
+//builder.AddSecurity();
+builder.AddDataContexts();
+builder.AddCrossOrigin();
+builder.AddDocumentation();
+builder.AddServices();
 
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+    app.ConfigureAmbienteDesenvolvimento();
 
-app.MapGet("/", () => "Hello World!");
+app.UseCors(APIConfiguration.CorsPolicyName);
+//app.UseSEcurity();
+app.MapEndPoints();
 
 app.Run();
+
+
