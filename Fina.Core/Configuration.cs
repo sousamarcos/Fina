@@ -7,7 +7,7 @@
         public const int DefaultStatusCodeResponse = 200;
 
         public static string ConnectionString { get; set; } = string.Empty;
-        public static string BackEndURL { get;  set;} = string.Empty;
-        public static string FrontEndURL { get; set; } = string.Empty ;
+        public static string BackEndURL { get;  set;} = "http://localhost:5041";
+        public static string FrontEndURL { get; set; } = "http://localhost:5044";
     }
 }
