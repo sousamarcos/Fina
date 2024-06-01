@@ -1,0 +1,36 @@
+﻿@page "/home/categorias"
+@inherits HomeCategoriesPage
+@using Fina.Core.Models
+
+<MudPaper Class="mx-auto pa-6">
+    <MudText Typo="Typo.h3">Categorias</MudText>
+</MudPaper>
+
+<MudSpacer />
+
+<MudDataGrid T="Category" MultiSelection="true" Hover="true" EditMode="DataGridEditMode.Form" Striped="true" Items="@listaCategorias" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter" Hideable="true">
+    <ToolBarContent>
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        
+        <MudSpacer />
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.TwoTone.Add" OnClick="OpenAddCategoryDialog">
+            Nova Categoria
+        </MudButton>
+    </ToolBarContent>
+    <Columns>
+        <SelectColumn T="Category" />
+        <PropertyColumn Property="x => x.Id" Title="ID" IsEditable="false" />
+        <PropertyColumn Property="x => x.Title" Title="Titulo" />
+        <PropertyColumn Property="x => x.Description" Title="Descrição" />
+        <TemplateColumn Class="d-flex justify-end" ShowFilterIcon="false">
+            <CellTemplate>
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Info" OnClick="() => OpenEditCategoryDialog(context.Item.Id, context.Item.Title)" />
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => OnDeleteCategory(context.Item.Id, context.Item.Title)" />
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="Category" />
+    </PagerContent>
+</MudDataGrid>

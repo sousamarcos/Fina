@@ -6,11 +6,36 @@
 
 <MudLayout>
     <MudAppBar>
-        Fina
+        <MudIconButton Open="True" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+
     </MudAppBar>
+    <MudDrawer @bind-Open="@open">
+
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h2">Fina</MudText>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SpaceDashboard" IconColor="Color.Inherit">Dashboard</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/home/categorias" Icon="@Icons.Material.Filled.Category" IconColor="Color.Inherit">Categorias</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LocalLibrary" IconColor="Color.Inherit">Transações</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.ExitToApp" IconColor="Color.Inherit">Sair</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
     <MudMainContent>
-        <MudContainer>
+        <MudContainer Fixed="true">
             @Body
         </MudContainer>
     </MudMainContent>
 </MudLayout>
+
+
+
+
+@code {
+    bool open = true;
+
+    void ToggleDrawer()
+    {
+        open = !open;
+    }
+}

@@ -1,0 +1,50 @@
+﻿@using Fina.Core.Models
+@inject IDialogService DialogService
+@inject MudBlazor.ISnackbar Snackbar
+
+<MudDialog>
+    <DialogContent>
+        <MudTextField @bind-Value="_category.Title" HelperText="Campo obrigatório" Label="Titulo" Required="true" />
+        <MudTextField Lines="5" @bind-Value="_category.Description" HelperText="Campo obrigatório" Label="Descrição" Required="true" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Save">Save</MudButton>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public Category Category { get; set; }
+
+    private Category _category = new Category();
+
+    protected override void OnParametersSet()
+    {
+        if (Category != null)
+        {
+            _category = new Category
+                {
+                    Id = Category.Id,
+                    Title = Category.Title,
+                    Description = Category.Description
+                };
+        }
+    }
+
+    private void Save()
+    {
+        if (string.IsNullOrWhiteSpace(_category.Title) || string.IsNullOrWhiteSpace(_category.Description))
+        {
+            Snackbar.Add("Preencha todos os campos", Severity.Error);
+            return;
+        }
+
+        MudDialog.Close(DialogResult.Ok(_category));
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+}

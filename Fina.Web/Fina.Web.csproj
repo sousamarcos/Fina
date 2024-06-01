@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Fina.Core\Fina.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Transactions\" />
+  </ItemGroup>
+
 </Project>

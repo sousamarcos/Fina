@@ -1,7 +1,6 @@
 using Fina.API;
 using Fina.API.Common.API;
 using Fina.API.EndPoints;
-using Microsoft.Extensions.Configuration;
 
 
 var builder = WebApplication.CreateBuilder(args);
