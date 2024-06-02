@@ -13,14 +13,29 @@ namespace Fina.Web.Services
         public async Task<Response<Category?>> CreateAsync(CreateCategoryRequest request)
         {
             var result = await _httpClient.PostAsJsonAsync("v1/categories", request);
-            return await result.Content.ReadFromJsonAsync<Response<Category?>>() ?? new Response<Category?>(null, 400, "Falha ao criar categoria");
+
+            if (result.IsSuccessStatusCode)
+            {
+                return await result.Content.ReadFromJsonAsync<Response<Category?>>();
+            }
+            else
+            {
+                return new Response<Category?>(null, 400, "Falha ao criar categoria");
+            }
         }
 
         public async Task<Response<Category?>> DeleteAsync(DeleteCategoryRequest request)
         {
             var result = await _httpClient.DeleteAsync($"v1/categories/{request.Id}");
-            return await result.Content.ReadFromJsonAsync<Response<Category?>>()
-                   ?? new Response<Category?>(null, 400, "Falha ao excluir a categoria");
+
+            if (result.IsSuccessStatusCode)
+            {
+                return await result.Content.ReadFromJsonAsync<Response<Category?>>();
+            }
+            else
+            {
+                return new Response<Category?>(null, 400, "Falha ao excluir a categoria");
+            }
         }
 
         public async Task<PagedResponse<List<Category>?>> GetAllAsync(GetAllCategoriesRequest request)
@@ -33,9 +48,21 @@ namespace Fina.Web.Services
 
         public async Task<Response<Category?>> UpdateAsync(UpdateCategoryRequest request)
         {
+            if (request.Id == 0)
+            {
+                return new Response<Category?>(null, 400, $"Campo obrigátorio não informado: ID");
+            }
+
             var result = await _httpClient.PutAsJsonAsync($"v1/categories/{request.Id}", request);
-            return await result.Content.ReadFromJsonAsync<Response<Category?>>()
-                   ?? new Response<Category?>(null, 400, "Falha ao atualizar a categoria");
+
+            if (result.IsSuccessStatusCode)
+            {
+                return await result.Content.ReadFromJsonAsync<Response<Category?>>();
+            }
+            else
+            {
+                return new Response<Category?>(null, 400, "Falha ao atualizar a categoria. ");
+            }
         }
     }
 }

@@ -8,10 +8,14 @@ namespace Fina.Web.Pages.Categories
 {
     public partial class HomeCategoriesPage : ComponentBase
     {
+        #region Variaveis
         public bool IsBusy { get; set; } = false;
         public List<Category> listaCategorias { get; set; } = new List<Category>();
-        public string searchString;
+        public string searchString { get; set; } = string.Empty;
 
+        #endregion
+
+        #region Services
         [Inject]
         public ISnackbar Snackbar { get; set; } = null!;
 
@@ -22,12 +26,11 @@ namespace Fina.Web.Pages.Categories
         public ICategoryService Service { get; set; } = null!;
 
         [Inject]
-        public NavigationManager NavigationManager { get; set; } = null!;
-
-        [Inject]
         public IDialogService DialogService { get; set; }= null!;
 
+        #endregion
 
+        #region Metodos
         public Func<Category, bool> _quickFilter => x =>
         {
             if (string.IsNullOrWhiteSpace(searchString))
@@ -182,5 +185,35 @@ namespace Fina.Web.Pages.Categories
                 Snackbar.Add(ex.Message, Severity.Error);
             }
         }
+
+        public async Task CommittedItemChanges(Category categoria)
+        {
+            try
+            {
+                var request = new UpdateCategoryRequest()
+                {
+                    Id = categoria.Id,
+                    Description = categoria.Description,
+                    Title = categoria.Title
+                };
+
+                var servicoCategoriaAtualizada = await Service.UpdateAsync(request);
+
+                if (servicoCategoriaAtualizada.IsSuccess)
+                    Snackbar.Add(servicoCategoriaAtualizada.Message, Severity.Success);
+                else
+                    Snackbar.Add(servicoCategoriaAtualizada.Message, Severity.Error);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add(ex.Message, Severity.Error);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        #endregion
     }
 }

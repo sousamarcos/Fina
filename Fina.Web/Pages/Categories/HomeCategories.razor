@@ -8,7 +8,8 @@
 
 <MudSpacer />
 
-<MudDataGrid T="Category" MultiSelection="true" Hover="true" EditMode="DataGridEditMode.Form" Striped="true" Items="@listaCategorias" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter" Hideable="true">
+<MudDataGrid T="Category" MultiSelection="true" Hover="true" ReadOnly="false" EditTrigger="@DataGridEditTrigger.Manual" EditMode="DataGridEditMode.Form" CommittedItemChanges="@CommittedItemChanges"
+Striped="true" Items="@listaCategorias" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter" Hideable="true">
     <ToolBarContent>
         <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         
@@ -25,7 +26,10 @@
         <PropertyColumn Property="x => x.Description" Title="Descrição" />
         <TemplateColumn Class="d-flex justify-end" ShowFilterIcon="false">
             <CellTemplate>
-                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Info" OnClick="() => OpenEditCategoryDialog(context.Item.Id, context.Item.Title)" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Edit" Color="Color.Info" OnClick="@context.Actions.StartEditingItemAsync" />
+
+@*                 <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Info" OnClick="() => OpenEditCategoryDialog(context.Item.Id, context.Item.Title)" />  *@
+
                 <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => OnDeleteCategory(context.Item.Id, context.Item.Title)" />
             </CellTemplate>
         </TemplateColumn>

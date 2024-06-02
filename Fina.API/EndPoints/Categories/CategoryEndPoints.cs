@@ -49,10 +49,10 @@ namespace Fina.API.EndPoints.Categories
             .Produces<PagedResponse<List<Category>?>>();
         }
 
-        private static async Task<IResult> CategoryServiceCreateAsync(ICategoryService handler,CreateCategoryRequest request)
+        private static async Task<IResult> CategoryServiceCreateAsync(ICategoryService service, CreateCategoryRequest request)
         {
             request.UserId = APIConfiguration.UserID;
-            var response = await handler.CreateAsync(request);
+            var response = await service.CreateAsync(request);
 
             return response.IsSuccess ? TypedResults.Created($"/{response.Data?.Id}", response) : TypedResults.BadRequest(response);
         }

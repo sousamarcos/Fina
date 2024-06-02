@@ -8,6 +8,7 @@ namespace Fina.API.Data
     {
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Transaction> Transactions { get; set; } = null!;
+        public DbSet<UserAccount> UserAccount { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
